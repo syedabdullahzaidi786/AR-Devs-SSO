@@ -28,7 +28,7 @@ export const auth = betterAuth({
         },
     },
     trustedOrigins: [
-        "https://ar-devs-sso.vercel.app/", // Production URL
+        "https://ar-devs-sso.vercel.app", // Production URL
         "http://localhost:3000",   // Local development
     ],
     // Use in-memory database for now as user just asked for "auth service" 
