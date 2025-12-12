@@ -6,7 +6,7 @@ export async function GET() {
     const res = await auth.api.signInSocial({
         body: {
             provider: "google",
-            callbackURL: "https://physical-ai-and-humanoid-robotics-t-peach.vercel.app/"
+            callbackURL: "https://ar-devs-sso.vercel.app/api/auth/callback/google"
         },
         headers: await headers()
     });
