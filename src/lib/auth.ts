@@ -9,6 +9,13 @@ export const auth = betterAuth({
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            authorization: {
+                params: {
+                    prompt: "consent select_account",
+                    access_type: "offline",
+                    response_type: "code",
+                },
+            },
         },
     },
     baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
@@ -21,7 +28,7 @@ export const auth = betterAuth({
         },
     },
     trustedOrigins: [
-        "https://auth.vercel.app", // Production URL
+        "https://ar-devs-sso.vercel.app/", // Production URL
         "http://localhost:3000",   // Local development
     ],
     // Use in-memory database for now as user just asked for "auth service" 
