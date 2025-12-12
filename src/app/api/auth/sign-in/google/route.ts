@@ -6,7 +6,7 @@ export async function GET() {
     const res = await auth.api.signInSocial({
         body: {
             provider: "google",
-            callbackURL: `${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/callback/google`
+            callbackURL: "https://physical-ai-and-humanoid-robotics-t-peach.vercel.app/"
         },
         headers: await headers()
     });
