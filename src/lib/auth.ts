@@ -1,12 +1,18 @@
 import { betterAuth } from "better-auth";
-import Database from "better-sqlite3";
+import postgres from "postgres";
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     throw new Error("Missing Google Client ID or Secret");
 }
 
+if (!process.env.POSTGRES_URL) {
+    throw new Error("Missing POSTGRES_URL environment variable");
+}
+
+const sql = postgres(process.env.POSTGRES_URL);
+
 export const auth = betterAuth({
-    database: new Database("./database.sqlite"),
+    database: sql,
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID,
