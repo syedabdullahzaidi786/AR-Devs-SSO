@@ -3,24 +3,41 @@
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function Dashboard() {
     const { data: session, isPending } = useSession();
     const router = useRouter();
 
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+    const [showLogoutSuccess, setShowLogoutSuccess] = useState(false);
+
     const handleSignOut = async () => {
+        setShowLogoutConfirm(true);
+    };
+
+    const confirmSignOut = async () => {
         try {
-            await signOut({
-                fetchOptions: {
-                    onSuccess: () => {
-                        window.location.href = "/";
+            setShowLogoutConfirm(false);
+            setShowLogoutSuccess(true);
+
+            // Artificial delay to show success popup (matches onboarding)
+            const timer = setTimeout(async () => {
+                await signOut({
+                    fetchOptions: {
+                        onSuccess: () => {
+                            window.location.href = "/";
+                        },
                     },
-                },
-            });
+                });
+            }, 2000);
+
+            return () => clearTimeout(timer);
         } catch (error) {
             console.error("Sign out error:", error);
+            setShowLogoutSuccess(false);
+            setShowLogoutConfirm(false);
         }
     };
 
@@ -122,6 +139,63 @@ export default function Dashboard() {
 
                 </div>
             </div>
+
+            {/* Logout Confirmation Popup */}
+            {showLogoutConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center animate-in zoom-in-95 slide-in-from-bottom-5 duration-500">
+                        <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-8 h-8 text-red-600 dark:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Sign Out?</h2>
+                        <p className="text-gray-600 dark:text-zinc-400 mb-8">Are you sure you want to log out of your secure session?</p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowLogoutConfirm(false)}
+                                className="flex-1 px-4 py-3 rounded-xl bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 font-semibold hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmSignOut}
+                                className="flex-1 px-4 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors shadow-lg shadow-red-900/20"
+                            >
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Logout Success Popup */}
+            {showLogoutSuccess && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center animate-in zoom-in-95 slide-in-from-bottom-5 duration-500">
+                        <div className="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Signed Out!</h2>
+                        <p className="text-gray-600 dark:text-zinc-400 mb-6">You have been securely logged out. Redirecting...</p>
+                        <div className="w-full h-1.5 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-600 animate-progress origin-left"></div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <style jsx>{`
+                @keyframes progress {
+                    0% { transform: scaleX(0); }
+                    100% { transform: scaleX(1); }
+                }
+                .animate-progress {
+                    animation: progress 2s linear forwards;
+                }
+            `}</style>
         </div>
     );
 }
