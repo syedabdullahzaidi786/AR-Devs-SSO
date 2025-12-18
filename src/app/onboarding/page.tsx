@@ -22,11 +22,8 @@ export default function OnboardingPage() {
     }, [state]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-zinc-100 p-4 relative overflow-hidden">
-            {/* Background Gradients */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(30,58,138,0.1),transparent)] pointer-events-none"></div>
-
-            <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl relative z-10 transition-all duration-500 hover:shadow-blue-900/10">
+        <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
+            <div className="w-full max-w-md glass-card rounded-3xl p-8 transition-all duration-500 hover:shadow-blue-900/10">
                 <div className="space-y-2 mb-8 text-center">
                     <h1 className="text-3xl font-bold tracking-tight text-white bg-gradient-to-br from-white to-zinc-500 bg-clip-text text-transparent">Welcome!</h1>
                     <p className="text-zinc-400 font-medium">Let's personalize your experience.</p>

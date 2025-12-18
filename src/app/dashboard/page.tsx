@@ -58,14 +58,8 @@ export default function Dashboard() {
     if (!session) return null;
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center p-4 transition-colors duration-300 bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100">
-            {/* Background Effects: Grid Pattern (Matching Login) */}
-            <div className="fixed inset-0 -z-10 h-full w-full bg-white dark:bg-slate-950 [background:radial-gradient(#e5e7eb_1px,transparent_1px)] dark:[background:radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-
-            {/* Ambient Glow */}
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[100px] pointer-events-none dark:bg-blue-600/20"></div>
-
-            <div className="w-full max-w-lg space-y-8 relative z-10 animate-fade-in-up">
+        <div className="flex min-h-screen flex-col items-center justify-center p-4 relative z-10">
+            <div className="w-full max-w-lg space-y-8 animate-fade-in-up">
 
                 {/* Logo & Header */}
                 <div className="flex flex-col items-center justify-center text-center">
@@ -90,7 +84,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Main Card */}
-                <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/60 px-8 py-10 shadow-2xl ring-1 ring-gray-900/5 dark:ring-white/10 rounded-3xl transition-all duration-300">
+                <div className="glass-card px-8 py-10 rounded-3xl transition-all duration-300">
 
                     <div className="mb-8 text-center sm:text-left">
                         <h3 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
@@ -125,7 +119,15 @@ export default function Dashboard() {
                         </button>
 
                         <button
-                            className="w-full rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 px-4 py-3.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-slate-700"
+                            className="w-full rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 px-4 py-3.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-slate-700 flex items-center justify-center gap-2"
+                            onClick={() => router.push("/profile")}
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                            View Profile
+                        </button>
+
+                        <button
+                            className="w-full rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 px-4 py-3.5 text-sm font-semibold text-red-600 dark:text-red-400 shadow-sm transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-100 dark:hover:border-red-900/30 focus:outline-none focus:ring-2 focus:ring-red-100 dark:focus:ring-red-900/20"
                             onClick={handleSignOut}
                         >
                             Sign Out

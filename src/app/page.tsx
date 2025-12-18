@@ -12,14 +12,8 @@ export default function Home() {
     };
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center p-4 transition-colors duration-300 bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100">
-            {/* Background Effects: Grid Pattern */}
-            <div className="fixed inset-0 -z-10 h-full w-full bg-white dark:bg-slate-950 [background:radial-gradient(#e5e7eb_1px,transparent_1px)] dark:[background:radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-
-            {/* Ambient Glow in Dark Mode */}
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[100px] pointer-events-none dark:bg-blue-600/20"></div>
-
-            <div className="w-full max-w-md space-y-8 relative z-10 animate-fade-in-up">
+        <div className="flex min-h-screen flex-col items-center justify-center p-4 relative z-10">
+            <div className="w-full max-w-md space-y-8 animate-fade-in-up">
                 {/* Header Section */}
                 <div className="flex flex-col items-center justify-center text-center">
                     <div className="relative h-20 w-20 mb-6 drop-shadow-xl transition-transform hover:scale-105 duration-300">
@@ -42,7 +36,7 @@ export default function Home() {
                 </div>
 
                 {/* Card */}
-                <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/60 px-8 py-10 shadow-2xl ring-1 ring-gray-900/5 dark:ring-white/10 rounded-3xl transition-all duration-300 hover:shadow-blue-500/5 dark:hover:shadow-blue-900/20">
+                <div className="glass-card px-8 py-10 rounded-3xl transition-all duration-300 hover:shadow-blue-500/5 dark:hover:shadow-blue-900/20">
                     <div className="mb-8 text-center sm:text-left">
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Welcome back</h3>
                         <p className="text-sm text-gray-500 dark:text-slate-400 mt-2 font-medium">Log in to your account</p>
