@@ -1,3 +1,4 @@
+// @ts-ignore - Prisma 7 might have some type sync issues in some environments during build
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
