@@ -45,5 +45,5 @@ export async function completeOnboarding(state: any, formData: FormData) {
         },
     });
 
-    redirect("/dashboard");
+    return { success: true };
 }
