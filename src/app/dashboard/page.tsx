@@ -1,9 +1,10 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect } from "react";
+
 
 export default function Dashboard() {
     const { data: session, isPending } = useSession();
@@ -11,15 +12,13 @@ export default function Dashboard() {
 
     const handleSignOut = async () => {
         try {
-            // Call sign-out API endpoint
-            await fetch("/api/auth/sign-out", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            await signOut({
+                fetchOptions: {
+                    onSuccess: () => {
+                        window.location.href = "/";
+                    },
                 },
             });
-            // Redirect to home page
-            window.location.href = "/";
         } catch (error) {
             console.error("Sign out error:", error);
         }

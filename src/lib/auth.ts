@@ -1,57 +1,51 @@
 import { betterAuth } from "better-auth";
-import postgres from "postgres";
-
-if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-    throw new Error("Missing Google Client ID or Secret");
-}
-
-if (!process.env.POSTGRES_URL) {
-    throw new Error("Missing POSTGRES_URL environment variable");
-}
-
-const sql = postgres(process.env.POSTGRES_URL);
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { prisma } from "./prisma";
+import { sendWelcomeEmail } from "./email";
 
 export const auth = betterAuth({
-    database: sql,
+    database: prismaAdapter(prisma, {
+        provider: "postgresql",
+    }),
     socialProviders: {
         google: {
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            redirectURI: process.env.NODE_ENV === "production"
-                ? "https://ar-devs-sso.vercel.app/api/auth/callback/google"
-                : "http://localhost:3000/api/auth/callback/google",
-            authorization: {
-                params: {
-                    prompt: "consent select_account",
-                    access_type: "offline",
-                    response_type: "code",
-                },
-            },
+            clientId: process.env.GOOGLE_CLIENT_ID || "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
         },
     },
     baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
     secret: process.env.BETTER_AUTH_SECRET || "development-fallback-secret-123456789",
-    account: {
-        // Skip state check in development to avoid localhost cookie issues
-        // This is safe for local dev but should NOT be used in production
-        accountLinking: {
-            enabled: true,
+    hooks: {},
+
+
+    databaseHooks: {
+        user: {
+            create: {
+                after: async (user) => {
+                    await sendWelcomeEmail({
+                        email: user.email,
+                        name: user.name,
+                    });
+                },
+            },
         },
-        skipStateCookieCheck: process.env.NODE_ENV !== "production",
+    },
+    user: {
+        additionalFields: {
+            experienceLevel: { type: "string", required: false },
+            accessPlatform: { type: "string", required: false },
+            primaryPurpose: { type: "string", required: false },
+            onboardingDone: { type: "boolean", defaultValue: false },
+        },
     },
     session: {
         cookieCache: {
             enabled: true,
-            maxAge: 5 * 60 * 1000, // 5 minutes
+            maxAge: 5 * 60 * 1000,
         },
     },
     advanced: {
         useSecureCookies: process.env.NODE_ENV === "production",
     },
-    trustedOrigins: process.env.NODE_ENV === "production"
-        ? [
-            "https://ar-devs-sso.vercel.app",
-            "https://physical-ai-and-humanoid-robotics-t-peach.vercel.app",
-        ]
-        : ["http://localhost:3000"],
 });
+

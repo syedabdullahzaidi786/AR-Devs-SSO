@@ -1,6 +1,16 @@
+"use client";
+
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
+    const handleGoogleSignIn = async () => {
+        await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/dashboard",
+        });
+    };
+
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-4 transition-colors duration-300 bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100">
             {/* Background Effects: Grid Pattern */}
@@ -40,8 +50,8 @@ export default function Home() {
 
                     <div className="space-y-6">
                         {/* Google Sign In Button */}
-                        <a
-                            href="/api/auth/sign-in/google"
+                        <button
+                            onClick={handleGoogleSignIn}
                             className="group flex w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition-all duration-200 hover:bg-blue-700 hover:shadow-blue-600/40 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 active:scale-[0.98]"
                         >
                             <div className="bg-white rounded-full p-0.5 shadow-sm transition-transform group-hover:rotate-12 duration-300">
@@ -65,7 +75,7 @@ export default function Home() {
                                 </svg>
                             </div>
                             <span className="tracking-wide">Sign in with Google</span>
-                        </a>
+                        </button>
 
                         <div className="relative py-2">
                             <div className="absolute inset-0 flex items-center">
